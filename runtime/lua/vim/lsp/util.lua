@@ -1378,6 +1378,17 @@ function M.stylize_markdown(bufnr, contents, opts)
     end
   end
 
+  stripped = vim.tbl_map(function(line)
+    line = string.gsub(line, '&gt;', '>')
+    line = string.gsub(line, '&lt;', '<')
+    line = string.gsub(line, '&quot;', '"')
+    line = string.gsub(line, '&apos;', "'")
+    line = string.gsub(line, '&ensp;', ' ')
+    line = string.gsub(line, '&emsp;', ' ')
+    line = string.gsub(line, '&amp;', '&')
+    return line
+  end, stripped)
+
   -- Compute size of float needed to show (wrapped) lines
   opts.wrap_at = opts.wrap_at or (vim.wo['wrap'] and api.nvim_win_get_width(0))
   local width = M._make_floating_popup_size(stripped, opts)
